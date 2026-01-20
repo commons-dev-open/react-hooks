@@ -1,0 +1,187 @@
+---
+globs: use*.ts
+alwaysApply: false
+---
+# Cursor Rules for @commons-dev/react-hooks
+
+## Adding a New Hook
+
+When adding a new hook to this package, follow these steps:
+
+### 1. Create the Hook File
+
+Create a new file in `src/hooks/` following the naming convention: `useHookName.ts` (camelCase).
+
+**Template:**
+
+````typescript
+import {} from /* React hooks needed */ 'react';
+
+/**
+ * Brief description of what the hook does.
+ *
+ * @param param1 - Description of param1
+ * @param param2 - Description of param2 (optional)
+ * @returns Description of return value
+ *
+ * @example
+ * ```tsx
+ * const result = useHookName(value);
+ * ```
+ */
+export function useHookName<T>(param1: T, param2?: number): ReturnType {
+  // Implementation
+}
+````
+
+**Requirements:**
+
+- Use named export: `export function useHookName(...)`
+- Include comprehensive JSDoc comments with @param, @returns, and @example
+- No side effects at module level (pure module for tree-shaking)
+- Use TypeScript generics when appropriate
+- Follow existing code style (single quotes, semicolons, etc.)
+
+### 2. Export the Hook
+
+Add the export to `src/hooks/index.ts`:
+
+```typescript
+export { useHookName } from './useHookName';
+```
+
+### 3. Add Build Entry Point
+
+Update `vite.config.ts` to include the new hook in the build entry points:
+
+```typescript
+entry: {
+  index: resolve(__dirname, 'src/index.ts'),
+  useHookName: resolve(__dirname, 'src/hooks/useHookName.ts'), // Add this line
+},
+```
+
+### 4. Add Package Exports
+
+Update `package.json` to add subpath exports for tree-shaking:
+
+```json
+"./useHookName": {
+  "import": {
+    "types": "./dist/useHookName.d.ts",
+    "default": "./dist/useHookName.esm.js"
+  },
+  "require": {
+    "types": "./dist/useHookName.d.ts",
+    "default": "./dist/useHookName.cjs.js"
+  }
+},
+```
+
+Place this entry before the `"./package.json"` entry in the exports object.
+
+### 5. Create Test File
+
+Create a test file in `__tests__/hooks/useHookName.test.ts`:
+
+**Template:**
+
+```typescript
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { renderHook, act } from '@testing-library/react';
+import { useHookName } from '../../src/hooks/useHookName';
+
+describe('useHookName', () => {
+  beforeEach(() => {
+    // Setup if needed (e.g., vi.useFakeTimers())
+  });
+
+  afterEach(() => {
+    // Cleanup if needed (e.g., vi.restoreAllMocks())
+  });
+
+  it('should return initial value', () => {
+    const { result } = renderHook(() => useHookName(initialValue));
+    expect(result.current).toBe(expectedValue);
+  });
+
+  // Add more test cases covering edge cases and behavior
+});
+```
+
+**Requirements:**
+
+- Test initial state
+- Test behavior changes
+- Test edge cases
+- Use `renderHook` from `@testing-library/react`
+- Use `act()` when testing state updates
+- Use fake timers if the hook uses setTimeout/setInterval
+
+### 6. Update Documentation
+
+Add documentation to `README.md` in the "Hooks" section:
+
+````markdown
+### useHookName
+
+Brief description of what the hook does.
+
+```tsx
+import { useHookName } from '@commons-dev/react-hooks';
+
+function ExampleComponent() {
+  const result = useHookName(value);
+
+  return <div>{result}</div>;
+}
+```
+````
+
+**API:**
+
+- `param1` - Description
+- `param2` - Description (optional)
+- Returns: Description
+
+````
+
+### 7. Verify Everything Works
+
+Run these commands to verify:
+```bash
+npm run lint        # Check for linting errors
+npm test            # Run tests
+npm run build       # Verify build succeeds
+````
+
+### Code Style Guidelines
+
+- **Imports**: Use named imports from 'react', group imports logically
+- **Exports**: Always use named exports, never default exports
+- **Types**: Use TypeScript generics for reusable hooks
+- **Comments**: Include JSDoc comments for all exported functions
+- **Formatting**: Follow Prettier configuration (single quotes, semicolons, 80 char width)
+- **Naming**: Use camelCase for hook names, descriptive variable names
+
+### Tree-Shaking Requirements
+
+- Each hook must be a pure module (no side effects)
+- No module-level code execution
+- Only export the hook function itself
+- Dependencies should be imported, not bundled
+
+### Testing Best Practices
+
+- Write tests for all public API methods
+- Test edge cases (null, undefined, empty values)
+- Test cleanup functions (useEffect return values)
+- Use appropriate test utilities (fake timers, act, etc.)
+- Aim for high test coverage
+
+## Documentation
+- Add or update the documentation in README.md
+
+### Example: Complete Hook Addition
+
+See existing hooks (`useLocalStorage`) as reference implementations.

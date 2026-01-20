@@ -1,0 +1,130 @@
+{
+  "name": "@commons-dev/react-hooks",
+  "version": "0.0.0",
+  "description": "A collection of useful React hooks",
+  "author": "commons-dev",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs.js",
+  "module": "./dist/index.esm.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.esm.js"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.cjs.js"
+      }
+    },
+    "./useDebounce": {
+      "import": {
+        "types": "./dist/useDebounce.d.ts",
+        "default": "./dist/useDebounce.esm.js"
+      },
+      "require": {
+        "types": "./dist/useDebounce.d.ts",
+        "default": "./dist/useDebounce.cjs.js"
+      }
+    },
+    "./useThrottle": {
+      "import": {
+        "types": "./dist/useThrottle.d.ts",
+        "default": "./dist/useThrottle.esm.js"
+      },
+      "require": {
+        "types": "./dist/useThrottle.d.ts",
+        "default": "./dist/useThrottle.cjs.js"
+      }
+    },
+    "./useLocalStorage": {
+      "import": {
+        "types": "./dist/useLocalStorage.d.ts",
+        "default": "./dist/useLocalStorage.esm.js"
+      },
+      "require": {
+        "types": "./dist/useLocalStorage.d.ts",
+        "default": "./dist/useLocalStorage.cjs.js"
+      }
+    },
+    "./useSessionStorage": {
+      "import": {
+        "types": "./dist/useSessionStorage.d.ts",
+        "default": "./dist/useSessionStorage.esm.js"
+      },
+      "require": {
+        "types": "./dist/useSessionStorage.d.ts",
+        "default": "./dist/useSessionStorage.cjs.js"
+      }
+    },
+    "./useCookie": {
+      "import": {
+        "types": "./dist/useCookie.d.ts",
+        "default": "./dist/useCookie.esm.js"
+      },
+      "require": {
+        "types": "./dist/useCookie.d.ts",
+        "default": "./dist/useCookie.cjs.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "vite build",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
+    "prepublishOnly": "npm run build",
+    "init": "npm install"
+  },
+  "keywords": [
+    "react",
+    "hooks",
+    "typescript",
+    "utilities"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/commons-dev-open/react-hooks.git"
+  },
+  "bugs": {
+    "url": "https://github.com/commons-dev-open/react-hooks/issues"
+  },
+  "homepage": "https://github.com/commons-dev-open/react-hooks#readme",
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/react": "^14.1.2",
+    "@types/node": "^20.10.0",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "@vitest/coverage-v8": "^1.1.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "jsdom": "^27.4.0",
+    "prettier": "^3.1.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.8",
+    "vite-plugin-dts": "^3.6.4",
+    "vitest": "^1.1.0"
+  }
+}
