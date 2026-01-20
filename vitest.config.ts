@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
-import { resolve } from 'path';
+import { resolve } from 'node:path';
 
 export default defineConfig({
   plugins: [react()],
@@ -21,7 +21,17 @@ export default defineConfig({
     },
     server: {
       deps: {
-        inline: ['@exodus/bytes', 'html-encoding-sniffer'],
+        // Inline these dependencies to fix ES module compatibility issues in Node 18.x
+        // html-encoding-sniffer (used by jsdom) tries to require() @exodus/bytes which is ESM-only
+        // Need to inline the entire dependency chain: jsdom -> html-encoding-sniffer -> @exodus/bytes
+        inline: [
+          'jsdom',
+          'html-encoding-sniffer',
+          '@exodus/bytes',
+          'whatwg-url',
+        ],
+        // Enable fallback to CommonJS for better ESM/CJS compatibility in Node 18.x
+        fallbackCJS: true,
       },
     },
   },
