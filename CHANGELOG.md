@@ -1,3 +1,8 @@
+## [1.0.2] 20-January-2026
+
+### Added
+- `__test__/setup.ts` file added
+
 ## [1.0.1] 20-January-2026
 
 ### Changed
