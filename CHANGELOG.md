@@ -1,3 +1,8 @@
+## [1.0.1] 20-January-2026
+
+### Changed
+- Remove tests for useDebounce hook
+
 ## [1.0.0] 20-January-2026
 
 ### Added
