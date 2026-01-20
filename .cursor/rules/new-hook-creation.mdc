@@ -1,6 +1,5 @@
 ---
-globs: use*.ts
-alwaysApply: false
+alwaysApply: true
 ---
 # Cursor Rules for @commons-dev/react-hooks
 

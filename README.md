@@ -557,6 +557,137 @@ function useCookie<T>(
 - Analytics tracking
 - Feature flags
 
+---
+
+### useClickOutside
+
+Detects clicks outside a referenced element, commonly used for closing modals, dropdowns, or popovers when users click outside of them.
+
+**How it works:** The hook attaches event listeners to the document (or a specified container) and checks if click events occur outside the referenced element. When a click outside is detected, the provided callback is executed. The hook supports both mouse and touch events for mobile compatibility and can be conditionally enabled or disabled.
+
+**Basic usage:**
+
+```tsx
+import { useClickOutside } from '@commons-dev/react-hooks';
+import { useState } from 'react';
+
+function Dropdown() {
+  const [isOpen, setIsOpen] = useState(false);
+  const ref = useClickOutside(() => {
+    setIsOpen(false);
+  });
+
+  return (
+    <div>
+      <button onClick={() => setIsOpen(!isOpen)}>Toggle Dropdown</button>
+      {isOpen && (
+        <div ref={ref} className="dropdown-menu">
+          <div>Menu Item 1</div>
+          <div>Menu Item 2</div>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+**With options:**
+
+```tsx
+import { useClickOutside } from '@commons-dev/react-hooks';
+import { useState } from 'react';
+
+function Modal() {
+  const [isOpen, setIsOpen] = useState(false);
+  const ref = useClickOutside(
+    () => {
+      setIsOpen(false);
+    },
+    {
+      eventType: 'click', // Use 'click' instead of 'mousedown'
+      enabled: isOpen, // Only listen when modal is open
+    }
+  );
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="modal-overlay">
+      <div ref={ref} className="modal-content">
+        <h2>Modal Title</h2>
+        <p>Modal content goes here</p>
+      </div>
+    </div>
+  );
+}
+```
+
+**With TypeScript generics:**
+
+```tsx
+import { useClickOutside } from '@commons-dev/react-hooks';
+import { useRef } from 'react';
+
+function ButtonMenu() {
+  const buttonRef = useClickOutside<HTMLButtonElement>(() => {
+    console.log('Clicked outside button');
+  });
+
+  return (
+    <button ref={buttonRef} onClick={() => console.log('Button clicked')}>
+      Click me or outside me
+    </button>
+  );
+}
+```
+
+**API:**
+
+```typescript
+function useClickOutside<T extends HTMLElement = HTMLElement>(
+  callback: () => void,
+  options?: UseClickOutsideOptions
+): React.RefObject<T>;
+```
+
+**Parameters:**
+
+- `callback` - Function to call when a click outside the referenced element is detected
+- `options` - Optional configuration object
+  - `eventType` - The event type to listen for: `'mousedown'` (default) or `'click'`
+  - `enabled` - Whether the hook is enabled (default: `true`)
+
+**Returns:**
+
+- A ref object (`React.RefObject<T>`) that should be attached to the element you want to detect clicks outside of
+
+**Features:**
+
+- ✅ Mobile support (automatically listens to touch events when using `mousedown`)
+- ✅ SSR-safe (handles server-side rendering gracefully)
+- ✅ Configurable event type (`mousedown` or `click`)
+- ✅ Conditional enabling/disabling without unmounting
+- ✅ Optimized callback handling (doesn't re-attach event listeners when callback changes)
+- ✅ TypeScript generics for element type inference
+
+**Notes:**
+
+- The hook uses `mousedown` by default for better UX (fires before `click`)
+- When `eventType` is `'mousedown'`, the hook also listens to `touchstart` events for mobile support
+- When `eventType` is `'click'`, only click events are listened to (no touch events)
+- The callback is stored in a ref, so it can be updated without re-attaching event listeners
+- The hook safely handles cases where the ref is `null` or the event target is `null`
+- Nested elements inside the referenced element are considered "inside" and won't trigger the callback
+
+**Use cases:**
+
+- Closing modals when clicking outside
+- Closing dropdown menus
+- Closing popovers or tooltips
+- Dismissing notifications
+- Closing context menus
+- Any UI element that should close when user clicks outside
+
 ## Tree-Shaking
 
 This package is fully tree-shakeable. You can import hooks individually to minimize bundle size:

@@ -69,6 +69,16 @@
         "default": "./dist/useCookie.cjs.js"
       }
     },
+    "./useClickOutside": {
+      "import": {
+        "types": "./dist/useClickOutside.d.ts",
+        "default": "./dist/useClickOutside.esm.js"
+      },
+      "require": {
+        "types": "./dist/useClickOutside.d.ts",
+        "default": "./dist/useClickOutside.cjs.js"
+      }
+    },
     "./package.json": "./package.json"
   },
   "files": [
