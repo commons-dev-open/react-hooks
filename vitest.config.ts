@@ -19,6 +19,11 @@ export default defineConfig({
         '**/*.config.*',
       ],
     },
+    server: {
+      deps: {
+        inline: ['@exodus/bytes', 'html-encoding-sniffer'],
+      },
+    },
   },
   resolve: {
     alias: {

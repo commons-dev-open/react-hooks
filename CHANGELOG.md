@@ -1,3 +1,8 @@
+## [1.0.3] 20-January-2026
+
+### Added
+- Add server dependencies for inline processing in Vitest config
+
 ## [1.0.2] 20-January-2026
 
 ### Added
