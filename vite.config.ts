@@ -26,6 +26,7 @@ export default defineConfig({
         usePrevious: resolve(__dirname, 'src/hooks/usePrevious.ts'),
         useToggle: resolve(__dirname, 'src/hooks/useToggle.ts'),
         useTimeout: resolve(__dirname, 'src/hooks/useTimeout.ts'),
+        useInterval: resolve(__dirname, 'src/hooks/useInterval.ts'),
       },
       formats: ['es', 'cjs'],
       fileName: (format, entryName) => {

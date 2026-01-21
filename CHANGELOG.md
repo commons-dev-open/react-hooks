@@ -1,6 +1,7 @@
 ## [Unreleased] 21-January-2026
 
 ### Added
+- `useInterval` hook to execute a callback function repeatedly at a specified interval with clear and reset functionality
 - `useTimeout` hook to execute a callback function after a specified delay with clear and reset functionality
 - `useToggle` hook to manage boolean state with a convenient toggle function
 - Added test file for `useDebounce` hook

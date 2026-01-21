@@ -181,6 +181,9 @@ npm run build       # Verify build succeeds
 ## Documentation
 - Add or update the documentation in README.md
 
+## Update the Change Log
+- Update the CHANGELOG.md as per the existing pattern
+
 ### Example: Complete Hook Addition
 
 See existing hooks (`useLocalStorage`) as reference implementations.

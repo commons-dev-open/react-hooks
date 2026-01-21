@@ -1071,6 +1071,125 @@ function useTimeout(
 - Showing loading states that auto-dismiss
 </details>
 
+---
+
+### useInterval
+
+Executes a callback function repeatedly at a specified interval, with the ability to clear or reset the interval. Perfect for polling, timers, animations, or any recurring tasks.
+
+<details>
+<summary>
+See the full docs
+</summary>
+<br/>
+
+**How it works:** The hook uses `setInterval` to execute a callback repeatedly at a specified interval. It provides `clear` and `reset` functions to manage the interval. The hook automatically cleans up the interval on unmount and updates when the callback or delay changes.
+
+**Basic usage:**
+
+```tsx
+import { useInterval } from '@commons-dev/react-hooks';
+
+function Timer() {
+  const [seconds, setSeconds] = useState(0);
+  const { clear } = useInterval(() => {
+    setSeconds((prev) => prev + 1);
+  }, 1000);
+
+  return (
+    <div>
+      <p>Timer: {seconds} seconds</p>
+      <button onClick={clear}>Stop Timer</button>
+    </div>
+  );
+}
+```
+
+**With reset functionality:**
+
+```tsx
+import { useInterval } from '@commons-dev/react-hooks';
+
+function PollingComponent() {
+  const { reset } = useInterval(() => {
+    fetchData();
+  }, 5000);
+
+  const handleManualRefresh = () => {
+    fetchData();
+    reset(); // Restart the interval
+  };
+
+  return (
+    <div>
+      <button onClick={handleManualRefresh}>Refresh Now</button>
+    </div>
+  );
+}
+```
+
+**Disabling the interval:**
+
+```tsx
+import { useInterval } from '@commons-dev/react-hooks';
+
+function ConditionalPolling({ shouldPoll }: { shouldPoll: boolean }) {
+  useInterval(() => {
+    fetchData();
+  }, shouldPoll ? 5000 : null);
+
+  return <div>Content</div>;
+}
+```
+
+**API:**
+
+```typescript
+function useInterval(
+  callback: () => void,
+  delay: number | null | undefined
+): { clear: () => void; reset: () => void };
+```
+
+**Parameters:**
+
+- `callback` - The function to execute at each interval
+- `delay` - The interval in milliseconds. Use `null` or `undefined` to disable the interval
+
+**Returns:**
+
+- An object with:
+  - `clear` - Function to cancel the interval
+  - `reset` - Function to restart the interval with the current delay
+
+**Features:**
+
+- ✅ Automatic cleanup on unmount
+- ✅ Updates callback reference when callback changes
+- ✅ Updates delay when delay changes
+- ✅ Can be disabled by passing `null` or `undefined` as delay
+- ✅ Handles negative delays gracefully (no-op)
+- ✅ Memoized `clear` and `reset` functions for stable references
+
+**Notes:**
+
+- The interval is automatically cleared when the component unmounts
+- If `delay` is `null`, `undefined`, or negative, the interval will not be set
+- The `clear` and `reset` functions maintain stable references across renders
+- The callback reference is kept up to date, so you can safely use closures
+
+**Use cases:**
+
+- Creating timers and counters
+- Polling APIs for updates
+- Implementing auto-refresh functionality
+- Animations and transitions
+- Periodic data synchronization
+- Implementing heartbeat/ping mechanisms
+- Auto-saving at regular intervals
+- Updating UI elements periodically
+</details>
+
 ## Tree-Shaking
 
 This package is fully tree-shakeable. You can import hooks individually to minimize bundle size:

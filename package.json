@@ -109,6 +109,16 @@
         "default": "./dist/useTimeout.cjs.js"
       }
     },
+    "./useInterval": {
+      "import": {
+        "types": "./dist/useInterval.d.ts",
+        "default": "./dist/useInterval.esm.js"
+      },
+      "require": {
+        "types": "./dist/useInterval.d.ts",
+        "default": "./dist/useInterval.cjs.js"
+      }
+    },
     "./package.json": "./package.json"
   },
   "files": [
