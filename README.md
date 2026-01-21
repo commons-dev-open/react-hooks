@@ -688,6 +688,115 @@ function useClickOutside<T extends HTMLElement = HTMLElement>(
 - Closing context menus
 - Any UI element that should close when user clicks outside
 
+---
+
+### usePrevious
+
+Stores the previous value of a variable or prop, useful for comparing current and previous values or detecting changes.
+
+**How it works:** The hook uses a ref to store the previous value and updates it in a `useEffect` after each render. On the first render, it returns `undefined` since there is no previous value yet. On subsequent renders, it returns the value from the previous render.
+
+**Basic usage:**
+
+```tsx
+import { usePrevious } from '@commons-dev/react-hooks';
+import { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+  const prevCount = usePrevious(count);
+
+  return (
+    <div>
+      <p>Current: {count}</p>
+      <p>Previous: {prevCount ?? 'N/A'}</p>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+    </div>
+  );
+}
+```
+
+**Detecting changes:**
+
+```tsx
+import { usePrevious } from '@commons-dev/react-hooks';
+import { useState, useEffect } from 'react';
+
+function UserProfile({ userId }) {
+  const prevUserId = usePrevious(userId);
+
+  useEffect(() => {
+    if (prevUserId !== undefined && prevUserId !== userId) {
+      console.log(`User changed from ${prevUserId} to ${userId}`);
+      // Fetch new user data
+    }
+  }, [userId, prevUserId]);
+
+  return <div>User ID: {userId}</div>;
+}
+```
+
+**With props:**
+
+```tsx
+import { usePrevious } from '@commons-dev/react-hooks';
+import { useEffect } from 'react';
+
+function PriceDisplay({ price }) {
+  const prevPrice = usePrevious(price);
+  const isIncreasing = prevPrice !== undefined && price > prevPrice;
+
+  return (
+    <div>
+      <p>Price: ${price}</p>
+      {prevPrice !== undefined && (
+        <p className={isIncreasing ? 'green' : 'red'}>
+          {isIncreasing ? '↑' : '↓'} ${Math.abs(price - prevPrice)}
+        </p>
+      )}
+    </div>
+  );
+}
+```
+
+**API:**
+
+```typescript
+function usePrevious<T>(value: T): T | undefined;
+```
+
+**Parameters:**
+
+- `value` - The current value to track
+
+**Returns:**
+
+- The previous value (or `undefined` on the first render)
+
+**Features:**
+
+- ✅ Works with any value type (primitives, objects, arrays, etc.)
+- ✅ Preserves reference equality for objects
+- ✅ SSR-safe (handles server-side rendering gracefully)
+- ✅ TypeScript generics for type safety
+
+**Notes:**
+
+- Returns `undefined` on the first render since there is no previous value
+- The hook updates the ref after the render completes (in `useEffect`)
+- For objects, the hook stores the reference, so if the same object is passed multiple times, it will return the same reference
+- Useful for detecting changes, comparing values, or implementing undo/redo functionality
+
+**Use cases:**
+
+- Comparing current and previous values
+- Detecting prop changes
+- Tracking state transitions
+- Implementing change indicators (e.g., price changes, score changes)
+- Debugging state updates
+- Calculating deltas or differences
+- Conditional logic based on previous values
+
 ## Tree-Shaking
 
 This package is fully tree-shakeable. You can import hooks individually to minimize bundle size:

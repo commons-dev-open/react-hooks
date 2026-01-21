@@ -2,10 +2,11 @@
 
 ### Added
 - `useClickOutside` hook to detect a click outside an element
+- `usePrevious` hook to store and track the previous value of a variable or prop
 
 ### Changed
 - Refactor useLocalStorage hook to use globalThis for window access, ensuring compatibility in non-browser environments.
-- Used bast practices for reliability
+- Used best practices for reliability
 - Clear the localStorage if the value is null, 0 and empty string
 - Updated the test cases to handle the above
 

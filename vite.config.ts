@@ -23,6 +23,7 @@ export default defineConfig({
         useSessionStorage: resolve(__dirname, 'src/hooks/useSessionStorage.ts'),
         useCookie: resolve(__dirname, 'src/hooks/useCookie.ts'),
         useClickOutside: resolve(__dirname, 'src/hooks/useClickOutside.ts'),
+        usePrevious: resolve(__dirname, 'src/hooks/usePrevious.ts'),
       },
       formats: ['es', 'cjs'],
       fileName: (format, entryName) => {

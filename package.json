@@ -79,6 +79,16 @@
         "default": "./dist/useClickOutside.cjs.js"
       }
     },
+    "./usePrevious": {
+      "import": {
+        "types": "./dist/usePrevious.d.ts",
+        "default": "./dist/usePrevious.esm.js"
+      },
+      "require": {
+        "types": "./dist/usePrevious.d.ts",
+        "default": "./dist/usePrevious.cjs.js"
+      }
+    },
     "./package.json": "./package.json"
   },
   "files": [
