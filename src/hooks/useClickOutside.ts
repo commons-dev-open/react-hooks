@@ -59,7 +59,7 @@ export function useClickOutside<T extends HTMLElement = HTMLElement>(
     }
 
     // SSR safety check
-    if (typeof document === 'undefined') {
+    if (globalThis.document === undefined) {
       return;
     }
 
@@ -73,18 +73,18 @@ export function useClickOutside<T extends HTMLElement = HTMLElement>(
     }
 
     // Attach the event listener
-    document.addEventListener(eventType, handleClickOutside);
+    globalThis.document.addEventListener(eventType, handleClickOutside);
 
     // Also listen for touch events on mobile devices
     if (eventType === 'mousedown') {
-      document.addEventListener('touchstart', handleClickOutside);
+      globalThis.document.addEventListener('touchstart', handleClickOutside);
     }
 
     return () => {
       // Cleanup the event listeners on component unmount or when dependencies change
-      document.removeEventListener(eventType, handleClickOutside);
+      globalThis.document.removeEventListener(eventType, handleClickOutside);
       if (eventType === 'mousedown') {
-        document.removeEventListener('touchstart', handleClickOutside);
+        globalThis.document.removeEventListener('touchstart', handleClickOutside);
       }
     };
   }, [eventType, enabled]);

@@ -64,7 +64,7 @@ describe('useSessionStorage', () => {
     const { result } = renderHook(() => useSessionStorage(key, 'initial'));
 
     act(() => {
-      window.dispatchEvent(
+      globalThis.window.dispatchEvent(
         new StorageEvent('storage', {
           key,
           newValue: JSON.stringify('from-storage-event'),
@@ -84,7 +84,7 @@ describe('useSessionStorage', () => {
     });
 
     act(() => {
-      window.dispatchEvent(
+      globalThis.window.dispatchEvent(
         new StorageEvent('storage', {
           key,
           newValue: JSON.stringify('from-localStorage'),
@@ -93,6 +93,85 @@ describe('useSessionStorage', () => {
       );
     });
 
+    expect(result.current[0]).toBe('original');
+  });
+
+  it('should remove item from sessionStorage when value is null', () => {
+    const { result } = renderHook(() => useSessionStorage(key, 'initial'));
+
+    // First set a value
+    act(() => {
+      result.current[1]('stored-value');
+    });
+    expect(sessionStorage.getItem(key)).toBe(JSON.stringify('stored-value'));
+
+    // Then set to null - should remove from sessionStorage
+    act(() => {
+      result.current[1](null as unknown as string);
+    });
+
+    expect(result.current[0]).toBe(null);
+    expect(sessionStorage.getItem(key)).toBeNull();
+  });
+
+  it('should remove item from sessionStorage when value is undefined', () => {
+    const { result } = renderHook(() => useSessionStorage(key, 'initial'));
+
+    // First set a value
+    act(() => {
+      result.current[1]('stored-value');
+    });
+    expect(sessionStorage.getItem(key)).toBe(JSON.stringify('stored-value'));
+
+    // Then set to undefined - should remove from sessionStorage
+    act(() => {
+      result.current[1](undefined as unknown as string);
+    });
+
+    expect(result.current[0]).toBe(undefined);
+    expect(sessionStorage.getItem(key)).toBeNull();
+  });
+
+  it('should handle storage events when item is removed', () => {
+    const { result } = renderHook(() => useSessionStorage(key, 'initial'));
+
+    act(() => {
+      result.current[1]('original');
+    });
+
+    // Simulate removal from another tab/window
+    act(() => {
+      globalThis.window.dispatchEvent(
+        new StorageEvent('storage', {
+          key,
+          newValue: null,
+          storageArea: sessionStorage,
+        })
+      );
+    });
+
+    expect(result.current[0]).toBe('initial');
+  });
+
+  it('should ignore removal events from localStorage', () => {
+    const { result } = renderHook(() => useSessionStorage(key, 'initial'));
+
+    act(() => {
+      result.current[1]('original');
+    });
+
+    // Simulate removal from localStorage (wrong storage type)
+    act(() => {
+      globalThis.window.dispatchEvent(
+        new StorageEvent('storage', {
+          key,
+          newValue: null,
+          storageArea: localStorage, // Wrong storage type
+        })
+      );
+    });
+
+    // Should not change - still 'original' because event was ignored
     expect(result.current[0]).toBe('original');
   });
 });

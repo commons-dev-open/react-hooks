@@ -16,6 +16,12 @@ interface CookieOptions {
  * @param options - Cookie options (expires, path, domain, secure, sameSite)
  * @returns A tuple of [storedValue, setValue, removeValue]
  *
+ * @remarks
+ * - Values are automatically JSON stringified/parsed
+ * - For security, consider using `secure: true` and `sameSite: 'strict'` options for sensitive data
+ * - Cookie values are URL-encoded to handle special characters safely
+ * - Always validate and sanitize cookie values before use to prevent XSS attacks
+ *
  * @example
  * ```tsx
  * const [theme, setTheme, removeTheme] = useCookie('theme', 'light', {
@@ -29,6 +35,17 @@ interface CookieOptions {
  *   </button>
  * );
  * ```
+ *
+ * @example
+ * ```tsx
+ * // Secure cookie example
+ * const [token, setToken] = useCookie('auth-token', '', {
+ *   expires: 1, // 1 day
+ *   secure: true,
+ *   sameSite: 'strict',
+ *   path: '/',
+ * });
+ * ```
  */
 export function useCookie<T>(
   key: string,
@@ -36,12 +53,12 @@ export function useCookie<T>(
   options?: CookieOptions
 ): [T, (value: T | ((val: T) => T), cookieOptions?: CookieOptions) => void, () => void] {
   const getCookieValue = useCallback((): T => {
-    if (typeof document === 'undefined') {
+    if (globalThis.document === undefined) {
       return initialValue;
     }
 
     try {
-      const cookies = document.cookie.split(';');
+      const cookies = globalThis.document.cookie.split(';');
       const cookie = cookies.find((c) => c.trim().startsWith(`${key}=`));
 
       if (!cookie) {
@@ -65,10 +82,10 @@ export function useCookie<T>(
     ): void => {
       try {
         const valueToStore =
-          value instanceof Function ? value(storedValue) : value;
+          typeof value === 'function' ? (value as (val: T) => T)(storedValue) : value;
         setStoredValue(valueToStore);
 
-        if (typeof document === 'undefined') {
+        if (globalThis.document === undefined) {
           return;
         }
 
@@ -104,7 +121,7 @@ export function useCookie<T>(
           cookieString += `; samesite=${opts.sameSite}`;
         }
 
-        document.cookie = cookieString;
+        globalThis.document.cookie = cookieString;
       } catch (error) {
         console.error(`Error setting cookie key "${key}":`, error);
       }
@@ -116,7 +133,7 @@ export function useCookie<T>(
     try {
       setStoredValue(initialValue);
 
-      if (typeof document === 'undefined') {
+      if (globalThis.document === undefined) {
         return;
       }
 
@@ -131,7 +148,7 @@ export function useCookie<T>(
         cookieString += `; domain=${opts.domain}`;
       }
 
-      document.cookie = cookieString;
+      globalThis.document.cookie = cookieString;
     } catch (error) {
       console.error(`Error removing cookie key "${key}":`, error);
     }

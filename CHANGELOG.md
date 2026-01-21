@@ -2,6 +2,11 @@
 
 ### Changed
 - Enhance README.md: Add detailed documentation sections for hooks including useDebounce, useThrottle, useLocalStorage, useSessionStorage, useCookie, useClickOutside, and usePrevious, with collapsible details for better readability.
+- Improve SSR compatibility: Replace `typeof window/document === 'undefined'` checks with `globalThis.window/document === undefined` in `useClickOutside`, `useCookie`, and `useSessionStorage` hooks for better server-side rendering support.
+- Enhance `useLocalStorage` and `useSessionStorage` hooks: Add `useRef` to store initialValue reference, preventing unnecessary re-attaching of storage event listeners when initialValue changes reference (e.g., objects/arrays recreated on each render).
+- Add comprehensive documentation: Include `@remarks` sections and additional examples for `useLocalStorage`, `useSessionStorage`, and `useCookie` hooks, documenting null/undefined handling, storage event synchronization, and security best practices.
+- Code cleanup: Refactor `useDebounce` and `useThrottle` hooks by inlining function type checks for improved readability.
+- Enhance test coverage: Update test cases for `useLocalStorage` and `useSessionStorage` hooks to cover new functionality and edge cases.
 
 ## [1.0.4] 21-January-2026
 

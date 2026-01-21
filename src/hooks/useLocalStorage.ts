@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 /**
  * Syncs state with localStorage.
@@ -6,6 +6,11 @@ import { useState, useEffect } from 'react';
  * @param key - The localStorage key
  * @param initialValue - The initial value if key doesn't exist
  * @returns A tuple of [storedValue, setValue]
+ *
+ * @remarks
+ * - Setting the value to `null` or `undefined` will remove the item from localStorage
+ * - The hook listens to storage events from other tabs/windows and updates accordingly
+ * - Only handles storage events from the same origin
  *
  * @example
  * ```tsx
@@ -18,11 +23,27 @@ import { useState, useEffect } from 'react';
  *   />
  * );
  * ```
+ *
+ * @example
+ * ```tsx
+ * // Remove item by setting to null or undefined
+ * const [data, setData] = useLocalStorage('data', {});
+ * setData(null); // Removes 'data' from localStorage
+ * ```
  */
 export function useLocalStorage<T>(
   key: string,
   initialValue: T
 ): [T, (value: T | ((val: T) => T)) => void] {
+  // Use a ref to store the latest initialValue to avoid re-attaching event listeners
+  // when initialValue changes reference (e.g., objects/arrays recreated on each render)
+  const initialValueRef = useRef(initialValue);
+
+  // Update ref when initialValue changes
+  useEffect(() => {
+    initialValueRef.current = initialValue;
+  }, [initialValue]);
+
   const [storedValue, setStoredValue] = useState<T>(() => {
     if (globalThis.window === undefined) {
       return initialValue;
@@ -46,10 +67,12 @@ export function useLocalStorage<T>(
       setStoredValue(valueToStore);
 
       if (globalThis.window !== undefined) {
-        if(valueToStore) //Set in localStorage key
-          globalThis.window.localStorage.setItem(key, JSON.stringify(valueToStore));
-        else //Remove from localStorage key
+        // Remove item from localStorage if value is null or undefined
+        if (valueToStore === null || valueToStore === undefined) {
           globalThis.window.localStorage.removeItem(key);
+        } else {
+          globalThis.window.localStorage.setItem(key, JSON.stringify(valueToStore));
+        }
       }
     } catch (error) {
       console.error(`Error setting localStorage key "${key}":`, error);
@@ -57,13 +80,33 @@ export function useLocalStorage<T>(
   };
 
   useEffect(() => {
+    if (globalThis.window === undefined) {
+      return;
+    }
+
     const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === key && e.newValue !== null) {
-        try {
-          setStoredValue(JSON.parse(e.newValue));
-        } catch (error) {
-          console.error(`Error parsing localStorage value for key "${key}":`, error);
-        }
+      // Only handle events for this specific key
+      if (e.key !== key) {
+        return;
+      }
+
+      // Verify the event is from localStorage (not sessionStorage)
+      // This check must come before handling null values to prevent
+      // incorrect storage type events from triggering state updates
+      if (e.storageArea !== globalThis.window.localStorage) {
+        return;
+      }
+
+      // If newValue is null, the item was removed
+      if (e.newValue === null) {
+        setStoredValue(initialValueRef.current);
+        return;
+      }
+
+      try {
+        setStoredValue(JSON.parse(e.newValue));
+      } catch (error) {
+        console.error(`Error parsing localStorage value for key "${key}":`, error);
       }
     };
 

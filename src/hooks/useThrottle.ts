@@ -46,9 +46,8 @@ export function useThrottle<T>(
   valueOrFn: T | ((...args: unknown[]) => unknown),
   delay: number = 500
 ): T {
-  const isFunction = typeof valueOrFn === 'function';
   const [throttledValue, setThrottledValue] = useState<T>(
-    isFunction ? (valueOrFn as T) : valueOrFn
+    typeof valueOrFn === 'function' ? (valueOrFn as T) : valueOrFn
   );
   const lastRanRef = useRef<number>(0);
   const fnRef = useRef(valueOrFn);

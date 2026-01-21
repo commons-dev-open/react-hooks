@@ -47,9 +47,8 @@ export function useDebounce<T>(
   valueOrFn: T | ((...args: unknown[]) => unknown),
   delay: number = 500
 ): T {
-  const isFunction = typeof valueOrFn === 'function';
   const [debouncedValue, setDebouncedValue] = useState<T>(
-    isFunction ? (valueOrFn as T) : valueOrFn
+    typeof valueOrFn === 'function' ? (valueOrFn as T) : valueOrFn
   );
   const fnRef = useRef(valueOrFn);
   const timeoutRef = useRef<NodeJS.Timeout>();
