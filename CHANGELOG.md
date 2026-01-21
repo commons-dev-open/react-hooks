@@ -3,6 +3,13 @@
 ### Added
 - `useClickOutside` hook to detect a click outside an element
 
+### Changed
+- Refactor useLocalStorage hook to use globalThis for window access, ensuring compatibility in non-browser environments.
+- Used bast practices for reliability
+- Clear the localStorage if the value is null, 0 and empty string
+- Updated the test cases to handle the above
+
+
 ## [1.0.3] 20-January-2026
 
 ### Added

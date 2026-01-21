@@ -60,6 +60,96 @@ describe('useLocalStorage', () => {
     });
   });
 
+  it('should remove item from localStorage when value is null', () => {
+    const { result } = renderHook(() => useLocalStorage(key, 'initial'));
+
+    // First set a value
+    act(() => {
+      result.current[1]('stored-value');
+    });
+    expect(localStorage.getItem(key)).toBe(JSON.stringify('stored-value'));
+
+    // Then set to null - should remove from localStorage
+    act(() => {
+      result.current[1](null as any);
+    });
+
+    expect(result.current[0]).toBe(null);
+    expect(localStorage.getItem(key)).toBeNull();
+  });
+
+  it('should remove item from localStorage when value is undefined', () => {
+    const { result } = renderHook(() => useLocalStorage(key, 'initial'));
+
+    // First set a value
+    act(() => {
+      result.current[1]('stored-value');
+    });
+    expect(localStorage.getItem(key)).toBe(JSON.stringify('stored-value'));
+
+    // Then set to undefined - should remove from localStorage
+    act(() => {
+      result.current[1](undefined as any);
+    });
+
+    expect(result.current[0]).toBe(undefined);
+    expect(localStorage.getItem(key)).toBeNull();
+  });
+
+  it('should remove item from localStorage when value is false', () => {
+    const { result } = renderHook(() => useLocalStorage(key, true));
+
+    // First set a value
+    act(() => {
+      result.current[1](true);
+    });
+    expect(localStorage.getItem(key)).toBe(JSON.stringify(true));
+
+    // Then set to false - should remove from localStorage
+    act(() => {
+      result.current[1](false);
+    });
+
+    expect(result.current[0]).toBe(false);
+    expect(localStorage.getItem(key)).toBeNull();
+  });
+
+  it('should remove item from localStorage when value is 0', () => {
+    const { result } = renderHook(() => useLocalStorage(key, 10));
+
+    // First set a value
+    act(() => {
+      result.current[1](5);
+    });
+    expect(localStorage.getItem(key)).toBe(JSON.stringify(5));
+
+    // Then set to 0 - should remove from localStorage
+    act(() => {
+      result.current[1](0);
+    });
+
+    expect(result.current[0]).toBe(0);
+    expect(localStorage.getItem(key)).toBeNull();
+  });
+
+  it('should remove item from localStorage when value is empty string', () => {
+    const { result } = renderHook(() => useLocalStorage(key, 'initial'));
+
+    // First set a value
+    act(() => {
+      result.current[1]('stored-value');
+    });
+    expect(localStorage.getItem(key)).toBe(JSON.stringify('stored-value'));
+
+    // Then set to empty string - should remove from localStorage
+    act(() => {
+      result.current[1]('');
+    });
+
+    expect(result.current[0]).toBe('');
+    expect(localStorage.getItem(key)).toBeNull();
+  });
+
   it('should handle storage events', () => {
     const { result } = renderHook(() => useLocalStorage(key, 'initial'));
 
