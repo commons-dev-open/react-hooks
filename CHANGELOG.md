@@ -1,3 +1,8 @@
+## [Unreleased] 21-January-2026
+
+### Changed
+- Enhance README.md: Add detailed documentation sections for hooks including useDebounce, useThrottle, useLocalStorage, useSessionStorage, useCookie, useClickOutside, and usePrevious, with collapsible details for better readability.
+
 ## [1.0.4] 21-January-2026
 
 ### Added

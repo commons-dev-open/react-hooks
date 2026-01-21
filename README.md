@@ -27,8 +27,12 @@ pnpm add @commons-dev/react-hooks
 ## Hooks
 
 ### useDebounce
-
 Debounces a value or function, delaying updates until after a specified period of inactivity. This is useful for reducing the frequency of expensive operations like API calls or DOM updates.
+<details>
+<summary>
+See the full docs
+</summary>
+<br/>
 
 **How it works:** When debouncing a value, the hook waits for the value to stop changing for the specified delay before updating. When debouncing a function, the function will only execute after the delay period has passed since the last call.
 
@@ -107,12 +111,18 @@ function useDebounce<T extends (...args: unknown[]) => unknown>(
 - Window resize handlers
 - Form validation (validate after user stops typing)
 - API calls triggered by user input
+</details>
 
 ---
 
 ### useThrottle
 
 Throttles a value or function, limiting how often it can update or execute. Unlike debouncing, throttling ensures the function/value updates at regular intervals, not just after inactivity.
+<details>
+<summary>
+See the full docs
+</summary>
+<br/>
 
 **How it works:** When throttling a value, the hook updates the value at most once per delay period. When throttling a function, the function will execute at most once per delay period, even if called multiple times.
 
@@ -198,12 +208,18 @@ function useThrottle<T extends (...args: unknown[]) => unknown>(
 
 - **Debounce**: Waits for inactivity before executing (good for search inputs)
 - **Throttle**: Executes at regular intervals (good for scroll/resize events)
+</details>
 
 ---
 
 ### useLocalStorage
 
 Synchronizes component state with `localStorage`, persisting data across browser sessions. The hook automatically handles serialization/deserialization and listens for storage events from other tabs/windows.
+<details>
+<summary>
+See the full docs
+</summary>
+<br/>
 
 **How it works:** The hook reads from `localStorage` on mount and writes to it whenever the state changes. It also listens for `storage` events to keep the state in sync across multiple tabs/windows. The hook is SSR-safe and will gracefully handle cases where `localStorage` is unavailable.
 
@@ -303,12 +319,18 @@ function useLocalStorage<T>(
 - Values are stored as JSON, so they must be JSON-serializable
 - The hook will use `initialValue` if `localStorage` is unavailable (e.g., in SSR or private browsing mode)
 - Changes made in other tabs/windows will automatically update the state
+</details>
 
 ---
 
 ### useSessionStorage
 
 Synchronizes component state with `sessionStorage`, persisting data for the current browser session. Unlike `localStorage`, data stored in `sessionStorage` is cleared when the browser tab is closed.
+<details>
+<summary>
+See the full docs
+</summary>
+<br/>
 
 **How it works:** The hook reads from `sessionStorage` on mount and writes to it whenever the state changes. It also listens for `storage` events to keep the state in sync across multiple tabs/windows (only for the same session). The hook is SSR-safe and will gracefully handle cases where `sessionStorage` is unavailable.
 
@@ -416,12 +438,18 @@ function useSessionStorage<T>(
 
 - **useLocalStorage**: Data persists across browser sessions (until explicitly cleared)
 - **useSessionStorage**: Data is cleared when the browser tab is closed
+</details>
 
 ---
 
 ### useCookie
 
 Synchronizes component state with browser cookies, allowing you to store and retrieve data that persists across browser sessions and can be sent to the server.
+<details>
+<summary>
+See the full docs
+</summary>
+<br/>
 
 **How it works:** The hook reads from cookies on mount and writes to them whenever the state changes. Cookies are automatically serialized/deserialized as JSON. The hook supports all standard cookie options including expiration, path, domain, secure, and sameSite.
 
@@ -556,12 +584,18 @@ function useCookie<T>(
 - Theme/language preferences
 - Analytics tracking
 - Feature flags
+</details>
 
 ---
 
 ### useClickOutside
 
 Detects clicks outside a referenced element, commonly used for closing modals, dropdowns, or popovers when users click outside of them.
+<details>
+<summary>
+See the full docs
+</summary>
+<br/>
 
 **How it works:** The hook attaches event listeners to the document (or a specified container) and checks if click events occur outside the referenced element. When a click outside is detected, the provided callback is executed. The hook supports both mouse and touch events for mobile compatibility and can be conditionally enabled or disabled.
 
@@ -687,12 +721,18 @@ function useClickOutside<T extends HTMLElement = HTMLElement>(
 - Dismissing notifications
 - Closing context menus
 - Any UI element that should close when user clicks outside
+</details>
 
 ---
 
 ### usePrevious
 
 Stores the previous value of a variable or prop, useful for comparing current and previous values or detecting changes.
+<details>
+<summary>
+See the full docs
+</summary>
+<br/>
 
 **How it works:** The hook uses a ref to store the previous value and updates it in a `useEffect` after each render. On the first render, it returns `undefined` since there is no previous value yet. On subsequent renders, it returns the value from the previous render.
 
@@ -796,6 +836,7 @@ function usePrevious<T>(value: T): T | undefined;
 - Debugging state updates
 - Calculating deltas or differences
 - Conditional logic based on previous values
+</details>
 
 ## Tree-Shaking
 
