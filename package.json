@@ -99,6 +99,16 @@
         "default": "./dist/useToggle.cjs.js"
       }
     },
+    "./useTimeout": {
+      "import": {
+        "types": "./dist/useTimeout.d.ts",
+        "default": "./dist/useTimeout.esm.js"
+      },
+      "require": {
+        "types": "./dist/useTimeout.d.ts",
+        "default": "./dist/useTimeout.cjs.js"
+      }
+    },
     "./package.json": "./package.json"
   },
   "files": [

@@ -953,6 +953,124 @@ function useToggle(
 - Any boolean state that benefits from a toggle function
 </details>
 
+---
+
+### useTimeout
+Executes a callback function after a specified delay, with the ability to clear or reset the timeout. Perfect for delayed actions, auto-save functionality, or showing notifications after a delay.
+
+<details>
+<summary>
+See the full docs
+</summary>
+<br/>
+
+**How it works:** The hook uses `setTimeout` to execute a callback after a specified delay. It provides `clear` and `reset` functions to manage the timeout. The hook automatically cleans up the timeout on unmount and updates when the callback or delay changes.
+
+**Basic usage:**
+
+```tsx
+import { useTimeout } from '@commons-dev/react-hooks';
+
+function Notification() {
+  const { clear } = useTimeout(() => {
+    console.log('This runs after 2 seconds');
+  }, 2000);
+
+  return (
+    <div>
+      <button onClick={clear}>Cancel Notification</button>
+    </div>
+  );
+}
+```
+
+**With reset functionality:**
+
+```tsx
+import { useTimeout } from '@commons-dev/react-hooks';
+
+function AutoSave() {
+  const [hasChanges, setHasChanges] = useState(false);
+  const { reset } = useTimeout(() => {
+    saveChanges();
+    setHasChanges(false);
+  }, 5000);
+
+  const handleChange = () => {
+    setHasChanges(true);
+    reset(); // Restart the timeout
+  };
+
+  return (
+    <div>
+      {hasChanges && <span>Saving in 5 seconds...</span>}
+      <input onChange={handleChange} />
+    </div>
+  );
+}
+```
+
+**Disabling the timeout:**
+
+```tsx
+import { useTimeout } from '@commons-dev/react-hooks';
+
+function ConditionalTimeout({ shouldRun }: { shouldRun: boolean }) {
+  useTimeout(() => {
+    console.log('This only runs if shouldRun is true');
+  }, shouldRun ? 1000 : null);
+
+  return <div>Content</div>;
+}
+```
+
+**API:**
+
+```typescript
+function useTimeout(
+  callback: () => void,
+  delay: number | null | undefined
+): { clear: () => void; reset: () => void };
+```
+
+**Parameters:**
+
+- `callback` - The function to execute after the delay
+- `delay` - The delay in milliseconds. Use `null` or `undefined` to disable the timeout
+
+**Returns:**
+
+- An object with:
+  - `clear` - Function to cancel the timeout
+  - `reset` - Function to restart the timeout with the current delay
+
+**Features:**
+
+- ✅ Automatic cleanup on unmount
+- ✅ Updates callback reference when callback changes
+- ✅ Updates delay when delay changes
+- ✅ Can be disabled by passing `null` or `undefined` as delay
+- ✅ Handles negative delays gracefully (no-op)
+- ✅ Memoized `clear` and `reset` functions for stable references
+
+**Notes:**
+
+- The timeout is automatically cleared when the component unmounts
+- If `delay` is `null`, `undefined`, or negative, the timeout will not be set
+- The `clear` and `reset` functions maintain stable references across renders
+- The callback reference is kept up to date, so you can safely use closures
+
+**Use cases:**
+
+- Showing notifications or alerts after a delay
+- Auto-saving form data
+- Implementing auto-logout after inactivity
+- Delaying API calls or side effects
+- Creating delayed actions or animations
+- Implementing retry logic with delays
+- Showing loading states that auto-dismiss
+</details>
+
 ## Tree-Shaking
 
 This package is fully tree-shakeable. You can import hooks individually to minimize bundle size:

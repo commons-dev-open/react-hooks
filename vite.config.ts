@@ -25,6 +25,7 @@ export default defineConfig({
         useClickOutside: resolve(__dirname, 'src/hooks/useClickOutside.ts'),
         usePrevious: resolve(__dirname, 'src/hooks/usePrevious.ts'),
         useToggle: resolve(__dirname, 'src/hooks/useToggle.ts'),
+        useTimeout: resolve(__dirname, 'src/hooks/useTimeout.ts'),
       },
       formats: ['es', 'cjs'],
       fileName: (format, entryName) => {

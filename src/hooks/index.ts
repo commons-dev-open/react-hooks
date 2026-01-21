@@ -6,3 +6,4 @@ export { useCookie } from './useCookie';
 export { useClickOutside } from './useClickOutside';
 export { usePrevious } from './usePrevious';
 export { useToggle } from './useToggle';
+export { useTimeout } from './useTimeout';
