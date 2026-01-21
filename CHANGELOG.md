@@ -1,5 +1,8 @@
 ## [Unreleased] 21-January-2026
 
+### Added
+- Added test file for `useDebounce` hook
+
 ### Changed
 - Enhance README.md: Add detailed documentation sections for hooks including useDebounce, useThrottle, useLocalStorage, useSessionStorage, useCookie, useClickOutside, and usePrevious, with collapsible details for better readability.
 - Improve SSR compatibility: Replace `typeof window/document === 'undefined'` checks with `globalThis.window/document === undefined` in `useClickOutside`, `useCookie`, and `useSessionStorage` hooks for better server-side rendering support.
