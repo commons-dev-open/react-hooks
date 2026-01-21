@@ -1,4 +1,4 @@
-## [Unreleased] 20-January-2026
+## [1.0.4] 21-January-2026
 
 ### Added
 - `useClickOutside` hook to detect a click outside an element
