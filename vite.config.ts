@@ -24,6 +24,7 @@ export default defineConfig({
         useCookie: resolve(__dirname, 'src/hooks/useCookie.ts'),
         useClickOutside: resolve(__dirname, 'src/hooks/useClickOutside.ts'),
         usePrevious: resolve(__dirname, 'src/hooks/usePrevious.ts'),
+        useToggle: resolve(__dirname, 'src/hooks/useToggle.ts'),
       },
       formats: ['es', 'cjs'],
       fileName: (format, entryName) => {

@@ -89,6 +89,16 @@
         "default": "./dist/usePrevious.cjs.js"
       }
     },
+    "./useToggle": {
+      "import": {
+        "types": "./dist/useToggle.d.ts",
+        "default": "./dist/useToggle.esm.js"
+      },
+      "require": {
+        "types": "./dist/useToggle.d.ts",
+        "default": "./dist/useToggle.cjs.js"
+      }
+    },
     "./package.json": "./package.json"
   },
   "files": [

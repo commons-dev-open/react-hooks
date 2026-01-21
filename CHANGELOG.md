@@ -1,6 +1,7 @@
 ## [Unreleased] 21-January-2026
 
 ### Added
+- `useToggle` hook to manage boolean state with a convenient toggle function
 - Added test file for `useDebounce` hook
 
 ### Changed

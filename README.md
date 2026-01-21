@@ -838,6 +838,121 @@ function usePrevious<T>(value: T): T | undefined;
 - Conditional logic based on previous values
 </details>
 
+---
+
+### useToggle
+
+Manages a boolean state with a convenient toggle function, perfect for toggling UI states like modals, dropdowns, or feature flags.
+<details>
+<summary>
+See the full docs
+</summary>
+<br/>
+
+**How it works:** The hook uses `useState` to manage a boolean value and provides a `toggle` function that flips the value between `true` and `false`. It also provides a `setValue` function for direct value updates. The toggle and setValue functions are memoized with `useCallback` to maintain stable references across renders.
+
+**Basic usage:**
+
+```tsx
+import { useToggle } from '@commons-dev/react-hooks';
+
+function Modal() {
+  const [isOpen, toggle, setIsOpen] = useToggle(false);
+
+  return (
+    <div>
+      <button onClick={toggle}>Toggle Modal</button>
+      {isOpen && (
+        <div className="modal">
+          <p>Modal content</p>
+          <button onClick={() => setIsOpen(false)}>Close</button>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+**With default initial value:**
+
+```tsx
+import { useToggle } from '@commons-dev/react-hooks';
+
+function ToggleButton() {
+  const [isEnabled, toggle] = useToggle();
+
+  return (
+    <button onClick={toggle} disabled={!isEnabled}>
+      {isEnabled ? 'Enabled' : 'Disabled'}
+    </button>
+  );
+}
+```
+
+**Using setValue directly:**
+
+```tsx
+import { useToggle } from '@commons-dev/react-hooks';
+
+function FeatureToggle() {
+  const [isActive, toggle, setIsActive] = useToggle(false);
+
+  const enableFeature = () => setIsActive(true);
+  const disableFeature = () => setIsActive(false);
+
+  return (
+    <div>
+      <button onClick={enableFeature}>Enable</button>
+      <button onClick={disableFeature}>Disable</button>
+      <button onClick={toggle}>Toggle</button>
+      <p>Feature is {isActive ? 'active' : 'inactive'}</p>
+    </div>
+  );
+}
+```
+
+**API:**
+
+```typescript
+function useToggle(
+  initialValue?: boolean
+): [boolean, () => void, (value: boolean) => void];
+```
+
+**Parameters:**
+
+- `initialValue` - The initial boolean value (defaults to `false`)
+
+**Returns:**
+
+- A tuple `[value, toggle, setValue]`:
+  - `value` - The current boolean state
+  - `toggle` - A function that toggles the value between `true` and `false`
+  - `setValue` - A function to set the value directly
+
+**Features:**
+
+- ✅ Simple boolean state management
+- ✅ Convenient toggle function
+- ✅ Direct value setter for explicit control
+- ✅ Memoized callbacks for stable references
+- ✅ TypeScript support with proper types
+
+**Notes:**
+
+- The `toggle` and `setValue` functions maintain stable references across renders
+- If no `initialValue` is provided, the hook defaults to `false`
+- The hook is useful for any boolean state that needs to be toggled frequently
+
+**Use cases:**
+
+- Toggling modals, dropdowns, or menus
+- Managing feature flags or settings
+- Controlling visibility of UI elements
+- Switching between two states (on/off, open/closed, enabled/disabled)
+- Any boolean state that benefits from a toggle function
+</details>
+
 ## Tree-Shaking
 
 This package is fully tree-shakeable. You can import hooks individually to minimize bundle size:
