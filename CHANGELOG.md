@@ -1,4 +1,4 @@
-## [Unreleased] 21-January-2026
+## [1.0.5] 21-January-2026
 
 ### Added
 - `useInterval` hook to execute a callback function repeatedly at a specified interval with clear and reset functionality
